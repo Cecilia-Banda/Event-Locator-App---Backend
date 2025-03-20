@@ -1,19 +1,19 @@
 {
   "name": "event-locator-app-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "event locator app",
+  "main": "src/index.js",
   "scripts": {
      "start": "node src/index.js",
-  "dev": "nodemon src/index.js"
-    "test": "echo \"Error: no test specified\" && exit 1"
+     "dev": "nodemon src/index.js",
+     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cecilia-Banda/Event-Locator-App---Backend.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cecilia-Banda",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Cecilia-Banda/Event-Locator-App---Backend/issues"
