@@ -6,13 +6,13 @@ const EventSchema = new mongoose.Schema({
   category: { type: String, required: true },
   date: { type: Date, required: true },
   location: {
-    type: { type: String, default: "Point" },
+    type: { type: String, enum: ["Point"], default: "Point" }, // GeoJSON format
     coordinates: { type: [Number], required: true }, // [longitude, latitude]
   },
   creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 }, { timestamps: true });
 
-EventSchema.index({ location: "2dsphere" }); // Enable geospatial search
+EventSchema.index({ location: "2dsphere" }); // Enable geospatial indexing
 
 const Event = mongoose.model("Event", EventSchema);
 module.exports = Event;

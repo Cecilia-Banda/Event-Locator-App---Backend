@@ -1,6 +1,6 @@
 const Event = require("../models/Event");
 
-// Create an event
+// This creates an event
 exports.createEvent = async (req, res) => {
   try {
     const { name, description, category, date, location } = req.body;
@@ -57,6 +57,50 @@ exports.deleteEvent = async (req, res) => {
     const event = await Event.findByIdAndDelete(req.params.id);
     if (!event) return res.status(404).json({ error: "Event not found" });
     res.json({ message: "Event deleted" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Finds an event
+exports.findEventsNearby = async (req, res) => {
+  try {
+    const { longitude, latitude, maxDistance } = req.query;
+
+    if (!longitude || !latitude) {
+      return res.status(400).json({ error: "Longitude and latitude are required" });
+    }
+
+    const events = await Event.find({
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+          },
+          $maxDistance: maxDistance ? parseInt(maxDistance) : 5000, // Default 5km
+        },
+      },
+    });
+
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Filters events by category
+exports.filterEventsByCategory = async (req, res) => {
+  try {
+    const { category } = req.query;
+    
+    if (!category) {
+      return res.status(400).json({ error: "Category is required" });
+    }
+
+    const events = await Event.find({ category: category });
+
+    res.json(events);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
