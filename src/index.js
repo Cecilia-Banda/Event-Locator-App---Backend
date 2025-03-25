@@ -4,6 +4,11 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
 const authRoutes = require("./routes/authRoutes");
+const i18next = require("./config/i18n");
+const i18nextMiddleware = require("i18next-http-middleware");
+
+app.use(i18nextMiddleware.handle(i18next));
+
 
 const app = express();
 

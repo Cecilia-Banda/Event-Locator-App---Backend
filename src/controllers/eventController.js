@@ -1,6 +1,7 @@
 const Event = require("../models/Event");
+const { scheduleNotification } = require("../services/notificationService");
 
-// This creates an event
+// Create an event and schedule a notification
 exports.createEvent = async (req, res) => {
   try {
     const { name, description, category, date, location } = req.body;
@@ -10,10 +11,15 @@ exports.createEvent = async (req, res) => {
       category,
       date,
       location,
-      creator: req.user.userId, // Get user ID from JWT
+      creator: req.user.userId
     });
+
     await newEvent.save();
-    res.status(201).json(newEvent);
+
+    // Schedule a notification for this event
+    await scheduleNotification(newEvent);
+
+    res.status(201).json({( message: req.t("event_created"), event: newEvent});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -62,7 +68,7 @@ exports.deleteEvent = async (req, res) => {
   }
 };
 
-// Finds an event
+// Find events near a location
 exports.findEventsNearby = async (req, res) => {
   try {
     const { longitude, latitude, maxDistance } = req.query;
@@ -89,11 +95,11 @@ exports.findEventsNearby = async (req, res) => {
   }
 };
 
-// Filters events by category
+// Filter events by category
 exports.filterEventsByCategory = async (req, res) => {
   try {
     const { category } = req.query;
-    
+
     if (!category) {
       return res.status(400).json({ error: "Category is required" });
     }
