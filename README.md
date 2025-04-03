@@ -18,7 +18,7 @@ This is a **Node.js backend** for an event locator app, featuring:
        npm install
 
 3. Create an .env file with these included:
-   MONGO_URI=mongodb://localhost:27017/event_locator
+   MONGO_URI=mongodb:your root
    JWT_SECRET=your_secret_key
 
 4. Connect both MongoDB and Redis: 
