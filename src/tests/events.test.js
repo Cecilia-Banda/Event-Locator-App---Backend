@@ -1,5 +1,6 @@
 const request = require("supertest");
 const app = require("../index");
+const app = require("../app"); // Import your Express app
 
 let authToken; // Will store JWT token for authenticated requests
 
@@ -29,7 +30,17 @@ describe("Event API Tests", () => {
         name: "Test Event",
         category: "Music",
         date: "2024-06-01",
-        location: { coordinates: [-73.935242, 40.73061] },
+            location: { coordinates: [-73.935242, 40.73061] },
+          });
+    
+        expect(res.statusCode).toBe(201);
+        expect(res.body).toHaveProperty("_id");
+      });
+    
+      test("Get all events", async () => {
+        const res = await request(app).get("/api/events");
+        expect(res.statusCode).toBe(200);
+        expect(Array.isArray(res.body)).toBe(true);
       });
 
     expect(res.statusCode).toBe(201);
@@ -106,5 +117,4 @@ describe("Event API Tests", () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty("message", "Event deleted");
-  });
 });

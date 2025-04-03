@@ -24,6 +24,10 @@ router.get('/events/nearby', async (req, res) => {
       WHERE ST_DWithin(location, ST_MakePoint(:lon, :lat)::geography, :radius)
       ORDER BY distance;
   `;
+  router.get('/welcome', (req, res) => {
+    res.send(req.t("welcome"));
+});
+
   router.get('/events', async (req, res) => {
     const { category } = req.query;
     
