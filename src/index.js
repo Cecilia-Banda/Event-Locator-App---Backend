@@ -10,6 +10,16 @@ const i18next = require("./config/i18n");
 const i18nextMiddleware = require("i18next-http-middleware");
 const { eventQueue } = require("./config/redis");
 const { Worker } = require("bullmq");
+const redis = require("redis");
+const client = redis.createClient();
+
+client.on("connect", () => {
+  console.log("Connected to Redis!");
+});
+
+client.on("error", (err) => {
+  console.error("Redis error:", err);
+});
 
 // Middleware //
 app.use(i18nextMiddleware.handle(i18next));

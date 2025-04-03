@@ -14,5 +14,16 @@ const EventSchema = new mongoose.Schema({
 
 EventSchema.index({ location: "2dsphere" }); // Enable geospatial indexing
 
+
 const Event = mongoose.model("Event", EventSchema);
+
+const Event = sequelize.define("Event", {
+  title: DataTypes.STRING,
+  location: {
+      type: DataTypes.GEOMETRY('POINT'),
+      allowNull: false
+  },
+  category: DataTypes.STRING
+});
+
 module.exports = Event;
